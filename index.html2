@@ -1,0 +1,397 @@
+<html><head><base href="." target="_blank">
+  <title>ATM CRASH GAME PREDICTOR</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #1a1a2e;
+      color: #fff;
+      font-family: 'Arial', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center; 
+      overflow-x: hidden;
+      width: 100vw; 
+      touch-action: manipulation;
+    }
+
+    .container {
+      width: 95%;
+      max-width: 600px;
+      padding: 15px;
+      text-align: center;
+      box-sizing: border-box; 
+    }
+
+    .game-select {
+      background: rgba(50, 50, 80, 0.3);
+      border-radius: 20px;
+      padding: 30px;
+      margin: 20px 0;
+      box-shadow: 0 0 20px rgba(100, 100, 255, 0.2);
+      width: 100%; 
+    }
+
+    .prediction-box {
+      display: none;
+      background: rgba(50, 50, 80, 0.3);
+      border-radius: 20px;
+      padding: 30px;
+      margin: 20px 0;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(100, 255, 100, 0.3);
+      width: 100%; 
+    }
+
+    .jet {
+      width: 120px;
+      height: 120px;
+      position: relative;
+      margin: 30px auto;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0); }
+    }
+
+    .multiplier-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .multiplier {
+      font-size: 48px;
+      font-weight: bold;
+      color: #00ffff;
+      text-shadow: 0 0 30px #00ffff;
+      margin-right: 10px;
+    }
+
+    .rocket {
+      font-size: 40px;
+      animation: launch 1s linear infinite;
+    }
+
+    @keyframes launch {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+      100% { transform: translateY(0); }
+    }
+
+    .timer {
+      font-size: 28px;
+      margin: 15px 0;
+      color: #ff00ff;
+      text-shadow: 0 0 20px #ff00ff;
+    }
+
+    .btn {
+      background: linear-gradient(45deg, #0f0, #0ff);
+      color: #000;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 30px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin: 8px;
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .login-container {
+      background: rgba(50, 50, 80, 0.3);
+      border-radius: 20px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 0 20px rgba(255, 100, 255, 0.3);
+      width: 95%; 
+      max-width: 350px; 
+    }
+
+    .login-input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 14px;
+      box-sizing: border-box; 
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+      -webkit-appearance: none;
+    }
+
+    .login-container h2 {
+      color: #00ffff;
+      text-shadow: 0 0 15px #00ffff;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .pulse {
+      animation: pulse 1.5s infinite alternate;
+    }
+
+    .game-option {
+      background: rgba(100, 100, 200, 0.2);
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: all 0.3s;
+      color: #ccffcc;
+      text-shadow: 0 0 10px #ccffcc;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .game-option:hover {
+      background: rgba(100, 100, 200, 0.3);
+    }
+
+    .btn:disabled {
+      background: #444;
+      color: #888;
+      box-shadow: none;
+    }
+
+    .btn:hover:not(:disabled) {
+      transform: scale(1.08);
+      box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 24px;
+      }
+      
+      h2 {
+        font-size: 20px;
+      }
+      
+      .multiplier {
+        font-size: 40px;
+      }
+      
+      .timer {
+        font-size: 20px;
+      }
+      
+      .btn {
+        padding: 12px 24px;
+        font-size: 14px;
+      }
+      
+      .jet {
+        width: 80px;
+        height: 80px;
+      }
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(50, 50, 80, 0.1);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(0, 255, 255, 0.3);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(0, 255, 255, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="loginForm" class="login-container">
+      <h2>ATM SPORTYBET/1WIN CRASH GAME PREDICTOR</h2>
+      <div id="loginInputs">
+        <input type="text" id="username" class="login-input" placeholder="Username" required>
+        <input type="password" id="password" class="login-input" placeholder="Password" required>
+        <button class="btn" onclick="login()">Login</button>
+        <p style="color: #fff; margin-top: 10px;">
+          New user? <button class="btn" onclick="showSignup()">Sign Up</button>
+        </p>
+      </div>
+      
+      <div id="signupInputs" style="display: none;">
+        <input type="text" id="newUsername" class="login-input" placeholder="Choose Username" required>
+        <input type="password" id="newPassword" class="login-input" placeholder="Choose Password" required>
+        <input type="password" id="confirmPassword" class="login-input" placeholder="Confirm Password" required>
+        <button class="btn" onclick="signup()">Create Account</button>
+        <p style="color: #fff; margin-top: 10px;">
+          Already have an account? <button class="btn" onclick="showLogin()">Login</button>
+        </p>
+      </div>
+    </div>
+
+    <div id="mainContent" style="display: none;">
+      <h1>ATM CRASH GAME PREDICTOR</h1>
+
+      <div id="gameSelect" class="game-select">
+        <h2>Select Your Game</h2>
+        <div class="game-option" onclick="selectGame('sportybet')">Sportybet Aviator</div>
+        <div class="game-option" onclick="selectGame('1win')">1Win Lucky Jet</div>
+        <div class="game-option" onclick="selectGame('sporty-hero')">Sporty Hero</div>
+      </div>
+
+      <div id="predictionBox" class="prediction-box">
+        <svg class="jet" viewBox="0 0 100 100">
+          <path d="M20,50 L40,30 L80,30 L90,50 L80,70 L40,70 Z" fill="#00ffff"/>
+          <circle cx="60" cy="50" r="5" fill="#ff00ff"/>
+        </svg>
+        <div class="multiplier-container pulse" id="multiplierDisplay">
+          <span class="multiplier">2.00</span><span class="rocket">&#x1f680;</span>x
+        </div>
+        <div class="timer" id="timer">Next prediction in: <span id="countdown">90</span> seconds</div>
+        <button class="btn" id="predictBtn">Generate Prediction</button>
+      </div>
+    </div>
+  </div>
+
+  <script>let selectedGame = null;
+function selectGame(game) {
+  if (navigator.vibrate) {
+    navigator.vibrate(30);
+  }
+  selectedGame = game;
+  document.getElementById('gameSelect').style.display = 'none';
+  document.getElementById('predictionBox').style.display = 'block';
+  startCountdown();
+}
+function generateRandomMultiplier() {
+  const min = 1.4;
+  const max = 2.5;
+  const randomValue = Math.random() * (max - min) + min;
+  return randomValue.toFixed(2);
+}
+const timer = document.getElementById('countdown');
+const predictBtn = document.getElementById('predictBtn');
+const multiplierDisplay = document.getElementById('multiplierDisplay');
+const multiplierValueSpan = multiplierDisplay.querySelector('.multiplier');
+let countdownInterval;
+let isCountdownActive = true;
+function updateCountdownDisplay(seconds) {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+}
+function startCountdown() {
+  clearInterval(countdownInterval);
+  let timeLeft = 90;
+  isCountdownActive = true;
+  predictBtn.disabled = true;
+  timer.style.color = "#ff00ff";
+  countdownInterval = setInterval(() => {
+    if (timeLeft <= 0) {
+      clearInterval(countdownInterval);
+      const newMultiplier = generateRandomMultiplier();
+      multiplierValueSpan.textContent = newMultiplier;
+      timer.innerHTML = "&#x26a0;&#xfe0f; CASH OUT AT NEXT ROUND! &#x26a0;&#xfe0f;";
+      timer.style.color = "#00ff00";
+      isCountdownActive = false;
+      predictBtn.disabled = false;
+      setTimeout(() => {
+        if (!isCountdownActive) {
+          timer.textContent = "Starting next prediction...";
+          timer.style.color = "#ff00ff";
+          setTimeout(() => {
+            startCountdown();
+          }, 10000);
+        }
+      }, 3000);
+    } else {
+      timer.textContent = updateCountdownDisplay(timeLeft);
+      timeLeft--;
+    }
+  }, 1000);
+}
+predictBtn.addEventListener('click', function () {
+  if (navigator.vibrate) {
+    navigator.vibrate(30);
+  }
+  if (isCountdownActive) {
+    return;
+  }
+  const newMultiplier = generateRandomMultiplier();
+  multiplierValueSpan.textContent = newMultiplier;
+  startCountdown();
+});
+function showSignup() {
+  document.getElementById('loginInputs').style.display = 'none';
+  document.getElementById('signupInputs').style.display = 'block';
+}
+function showLogin() {
+  document.getElementById('loginInputs').style.display = 'block';
+  document.getElementById('signupInputs').style.display = 'none';
+}
+function signup() {
+  const username = document.getElementById('newUsername').value;
+  const password = document.getElementById('newPassword').value;
+  const confirmPassword = document.getElementById('confirmPassword').value;
+  if (!username || !password || !confirmPassword) {
+    alert('Please fill in all fields');
+    return;
+  }
+  if (password !== confirmPassword) {
+    alert('Passwords do not match');
+    return;
+  }
+  const users = JSON.parse(localStorage.getItem('users') || '{}');
+  if (users[username]) {
+    alert('Username already exists');
+    return;
+  }
+  users[username] = password;
+  localStorage.setItem('users', JSON.stringify(users));
+  alert('Account created successfully!');
+  showLogin();
+}
+function login() {
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+  if (!username || !password) {
+    alert('Please enter both username and password');
+    return;
+  }
+  if (username === 'atmkelvin' && password === 'atmpredictor10') {
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('mainContent').style.display = 'block';
+    return;
+  }
+  const users = JSON.parse(localStorage.getItem('users') || '{}');
+  if (users[username] && users[username] === password) {
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('mainContent').style.display = 'block';
+  } else {
+    alert('Invalid credentials. Please try again.');
+  }
+  if (navigator.vibrate) {
+    navigator.vibrate(50);
+  }
+}
+if (!localStorage.getItem('users')) {
+  localStorage.setItem('users', JSON.stringify({}));
+}</script>
+</body>
+</html>
